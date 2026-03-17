@@ -92,3 +92,7 @@ Optional group-aware splitting:
 
 # Logging
 Reusable logging utilities are placed under `code/src/log/` so the same logger setup can be reused later in training scripts.
+
+# Developer Notes
+- Generalization design for scaling the dataset pipeline beyond cats-vs-dogs:
+  [code/src/dataset_pipeline_generalization_design.md](/d:/1FILE/Program/python/ImgClassifer/code/src/dataset_pipeline_generalization_design.md)
