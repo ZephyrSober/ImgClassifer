@@ -33,8 +33,13 @@ def build_label_map(labels: Sequence[str] | dict[str, int]) -> dict[str, int]:
     return {label: index for index, label in enumerate(normalized_labels)}
 
 
-def _clean_manifest_row(row: dict[str, Any]) -> dict[str, str]:
-    return {str(key).strip(): str(value).strip() for key, value in row.items() if key is not None}
+def _clean_manifest_row(row: dict[str, Any]) -> dict[str, str | None]:
+    cleaned_row: dict[str, str | None] = {}
+    for key, value in row.items():
+        if key is None:
+            continue
+        cleaned_row[str(key).strip()] = None if value is None else str(value).strip()
+    return cleaned_row
 
 
 def _optional_int(value: str | None) -> int | None:
@@ -159,10 +164,13 @@ def _resolve_data_path(path_value: str | Path, config: dict[str, Any]) -> Path:
         return candidate.resolve()
 
     project_root = Path(config.get("project_root", Path.cwd())).expanduser().resolve()
-    project_candidate = (project_root / candidate).resolve()
-    if project_candidate.exists():
-        return project_candidate
-    return (Path.cwd() / candidate).resolve()
+    return (project_root / candidate).resolve()
+
+
+def _filter_records_for_stage(records: Sequence[SampleRecord], stage: str) -> list[SampleRecord]:
+    if stage not in {"train", "val", "test"}:
+        raise ValueError(f"Unsupported stage: {stage}")
+    return [record for record in records if record.split == stage]
 
 
 def build_dataset(
@@ -179,7 +187,11 @@ def build_dataset(
     runtime_cfg = config["runtime"]
     label_map = build_label_map(dataset_cfg["label_map"])
     resolved_dataset_root = _resolve_data_path(dataset_root, config)
-    generator = ManifestImageDataset(records=records, dataset_root=resolved_dataset_root, label_map=label_map)
+    stage_records = _filter_records_for_stage(records, stage)
+    if not stage_records:
+        raise ValueError(f"No samples found for stage '{stage}'")
+
+    generator = ManifestImageDataset(records=stage_records, dataset_root=resolved_dataset_root, label_map=label_map)
 
     dataset = ds.GeneratorDataset(
         source=generator,
