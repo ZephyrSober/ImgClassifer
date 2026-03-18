@@ -74,7 +74,7 @@
 
 ```text
 code/
-├── src/
+├── data_src/
 │   ├── data_clean.py
 │   ├── data_split.py
 │   └── log/
@@ -107,36 +107,46 @@ code/
 ### 5.2 `code/train/configs/`
 
 负责所有实验配置。  
-配置应分层组织，避免把所有内容塞进一个大文件。
+配置应分层组织，但第一版只保留训练运行真正需要的最小字段，避免把还没实现的扩展能力提前写进配置。
 
-建议分层如下：
+第一版建议分层如下：
 
 - `dataset/`
-  - 数据根目录
-  - manifest 路径
-  - 类别映射
-  - 输入尺寸
-  - normalize 参数
+  - `dataset_root`
+  - `manifest_path`
+  - `label_map`
+  - `image_size`
+  - `normalize`
 - `model/`
-  - 模型名称
-  - 输出类别数
-  - 是否加载预训练
-  - 模型特定超参数
+  - `model_name`
+  - `num_classes`
+  - `pretrained`
 - `train/`
-  - epoch
-  - batch size
-  - optimizer
-  - learning rate
-  - weight decay
-  - loss 配置
+  - `epochs`
+  - `batch_size`
+  - `optimizer`
+  - `loss`
+  - `log_interval`
 - `runtime/`
-  - 设备类型
-  - device id
-  - seed
-  - num workers
-  - run 输出目录
+  - `device_target`
+  - `device_id`
+  - `seed`
+  - `num_parallel_workers`
+  - `run_root`
 - `experiment/`
-  - 聚合 dataset/model/train/runtime，形成实际运行入口
+  - `experiment_name`
+  - `dataset_config`
+  - `model_config`
+  - `train_config`
+  - `runtime_config`
+
+配置层还应遵循以下最简原则：
+
+- 只放训练运行必须提供、且可能变化的实验参数
+- 不把 manifest 中已经存在的数据事实重复写进配置
+- 不为当前还没有实现的扩展能力提前增加字段
+- 第一版默认指标固定为 `accuracy`
+- 第一版默认保存 `best.ckpt` 和 `last.ckpt`
 
 ### 5.3 `code/train/src/data/`
 
@@ -447,9 +457,24 @@ code/
 
 ## 9. 配置组织建议
 
-推荐使用多层配置，而不是一个大配置文件包含所有内容。
+推荐使用多层配置，而不是一个大配置文件包含所有内容。  
+但第一版配置应坚持“必须项优先”，以便阅读和实现都尽量直接。
 
-建议结构如下：
+### 9.0 如何理解配置
+
+为了避免把不同类型的信息混在一起，建议先区分三类内容：
+
+- 数据事实
+  - 例如 `width`、`height`、`split`、`label`
+  - 这些信息来自 `manifest.csv`，不应重复写进训练配置
+- 实验参数
+  - 例如 `image_size`、`epochs`、`lr`
+  - 这些信息会影响一次训练运行，应写进配置
+- 框架默认行为
+  - 例如第一版指标固定为 `accuracy`
+  - 如果当前不需要切换，就先不暴露为配置项
+
+第一版建议结构如下：
 
 ### 9.1 dataset 配置
 
@@ -457,19 +482,20 @@ code/
 
 - `dataset_root`
 - `manifest_path`
-- `num_classes`
 - `label_map`
 - `image_size`
 - `normalize`
+
+其中 `image_size` 表示训练输入尺寸，不表示原始图片尺寸。  
+原始图片的真实宽高应来自 `manifest.csv` 中的 `width` 和 `height` 字段。
 
 ### 9.2 model 配置
 
 负责：
 
 - `model_name`
-- `pretrained`
-- `dropout`
 - `num_classes`
+- `pretrained`
 
 ### 9.3 train 配置
 
@@ -478,9 +504,6 @@ code/
 - `epochs`
 - `batch_size`
 - `optimizer`
-- `lr`
-- `momentum`
-- `weight_decay`
 - `loss`
 - `log_interval`
 
@@ -496,7 +519,13 @@ code/
 
 ### 9.5 experiment 配置
 
-负责组合上述配置，形成一次完整实验的入口。
+负责组合上述配置，形成一次完整实验的入口：
+
+- `experiment_name`
+- `dataset_config`
+- `model_config`
+- `train_config`
+- `runtime_config`
 
 ## 10. 实验目录规划
 

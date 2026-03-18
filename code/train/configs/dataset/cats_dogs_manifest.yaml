@@ -1,0 +1,15 @@
+dataset_root: dataset/cleaned_runs/cleaned_petimages_20260317_164602_652096
+manifest_path: dataset/splits/cleaned_petimages_20260317_164602_652096/split_test20260317_val20260318/manifest.csv
+label_map:
+  Cat: 0
+  Dog: 1
+image_size: 224
+normalize:
+  mean:
+    - 0.485
+    - 0.456
+    - 0.406
+  std:
+    - 0.229
+    - 0.224
+    - 0.225

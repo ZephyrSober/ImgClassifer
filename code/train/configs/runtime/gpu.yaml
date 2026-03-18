@@ -1,0 +1,5 @@
+device_target: GPU
+device_id: 0
+seed: 42
+num_parallel_workers: 8
+run_root: runs

@@ -1,0 +1,5 @@
+experiment_name: cats_dogs_shufflenet_v2_baseline_cpu
+dataset_config: ../dataset/cats_dogs_manifest.yaml
+model_config: ../model/shufflenet_v2_x1_0.yaml
+train_config: ../train/sgd_baseline.yaml
+runtime_config: ../runtime/cpu.yaml
