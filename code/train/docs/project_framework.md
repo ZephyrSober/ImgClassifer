@@ -401,11 +401,7 @@ code/
 
 ### 7.1 数据层接口
 
-- `build_label_map(labels) -> dict[str, int]`
-- `load_manifest(manifest_path, split=None) -> list[SampleRecord]`
-- `build_transforms(stage, image_size, normalize_cfg)`
-- `build_dataset(records, dataset_root, stage, config)`
-- `build_dataloader(split, config)`
+- `build_dataloader(config)`
 
 ### 7.2 模型层接口
 
