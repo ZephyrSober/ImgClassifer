@@ -1,0 +1,5 @@
+experiment_name: cats_dogs_linear_baseline_cpu
+dataset_config: ../dataset/cats_dogs_manifest.yaml
+model_config: ../model/linear_classifier.yaml
+train_config: ../train/adam_linear.yaml
+runtime_config: ../runtime/cpu.yaml

@@ -48,7 +48,9 @@ def _normalize_path(value: str) -> str:
 def _ensure_relative_to_root(root: Path, candidate: Path) -> None:
     resolved_root = root.resolve()
     resolved_candidate = candidate.resolve()
-    if not resolved_candidate.is_relative_to(resolved_root):
+    try:
+        resolved_candidate.relative_to(resolved_root)
+    except ValueError:
         raise ValueError(
             f"Image path {resolved_candidate} escapes dataset root {resolved_root}."
         )

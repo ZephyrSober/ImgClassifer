@@ -1,5 +1,6 @@
 device_target: CPU
 device_id: 0
+execution_mode: PYNATIVE_MODE
 seed: 42
 num_parallel_workers: 4
 run_root: runs
