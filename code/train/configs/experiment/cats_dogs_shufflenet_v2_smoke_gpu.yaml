@@ -1,0 +1,5 @@
+experiment_name: cats_dogs_shufflenet_v2_smoke_gpu
+dataset_config: ../dataset/cats_dogs_smoke_cleaned.yaml
+model_config: ../model/shufflenet_v2_x1_0.yaml
+train_config: ../train/smoke.yaml
+runtime_config: ../runtime/gpu.yaml

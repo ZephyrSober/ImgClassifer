@@ -1,5 +1,5 @@
-dataset_root: dataset/cleaned_runs/cleaned_petimages_20260317_164602_652096
-manifest_path: dataset/splits/cleaned_petimages_20260317_164602_652096/split_test20260317_val20260318/manifest.csv
+dataset_root: dataset/cleaned_runs/cleaned_petimages_20260523_201516_066875
+manifest_path: dataset/splits/cleaned_petimages_20260523_201516_066875/split_test20260317_val20260318/manifest.csv
 label_map:
   Cat: 0
   Dog: 1

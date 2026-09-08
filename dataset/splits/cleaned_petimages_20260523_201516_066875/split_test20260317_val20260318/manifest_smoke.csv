@@ -1,0 +1,9 @@
+relative_path,label,split
+Cat/0.jpg,Cat,train
+Dog/0.jpg,Dog,train
+Cat/1.jpg,Cat,train
+Dog/1.jpg,Dog,train
+Cat/100.jpg,Cat,val
+Dog/100.jpg,Dog,val
+Cat/101.jpg,Cat,test
+Dog/101.jpg,Dog,test

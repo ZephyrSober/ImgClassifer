@@ -171,6 +171,47 @@ Current transform behavior:
 
 If `mindspore` is not installed, importing the public dataloader builder will raise an `ImportError`.
 
+# Training
+
+Use the local MindSpore conda environment when running training:
+
+```bash
+/home/zephyr/.conda/envs/mindspore/bin/python code/train/tools/train.py \
+  --config code/train/configs/experiment/cats_dogs_shufflenet_v2_smoke_cpu.yaml \
+  --suppress-known-warnings
+```
+
+For a one-epoch full-dataset CPU check:
+
+```bash
+/home/zephyr/.conda/envs/mindspore/bin/python code/train/tools/train.py \
+  --config code/train/configs/experiment/cats_dogs_shufflenet_v2_quick_cpu.yaml \
+  --suppress-known-warnings
+```
+
+To evaluate the test split with an existing checkpoint:
+
+```bash
+/home/zephyr/.conda/envs/mindspore/bin/python code/train/tools/eval.py \
+  --config code/train/configs/experiment/cats_dogs_shufflenet_v2_quick_cpu.yaml \
+  --ckpt runs/20260523_201658_cats_dogs_shufflenet_v2_quick_cpu/checkpoints/best_epoch_001.ckpt \
+  --split test \
+  --suppress-known-warnings
+```
+
+GPU variants are available after the NVIDIA driver, CUDA, cuDNN, and a GPU-capable
+MindSpore runtime are correctly installed:
+
+```bash
+/home/zephyr/.conda/envs/mindspore/bin/python code/train/tools/train.py \
+  --config code/train/configs/experiment/cats_dogs_shufflenet_v2_smoke_gpu.yaml \
+  --suppress-known-warnings
+
+/home/zephyr/.conda/envs/mindspore/bin/python code/train/tools/train.py \
+  --config code/train/configs/experiment/cats_dogs_shufflenet_v2_quick_gpu.yaml \
+  --suppress-known-warnings
+```
+
 # Logging
 Reusable logging utilities are placed under `code/data_src/log/` so the same logger setup can be reused later in training scripts.
 
