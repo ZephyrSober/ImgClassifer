@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 runs/
 code/train/tests/_tmp/
+converter/
+*.ckpt
+*.mindir
+*.ms
