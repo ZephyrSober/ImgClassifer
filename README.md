@@ -218,3 +218,5 @@ Reusable logging utilities are placed under `code/data_src/log/` so the same log
 # Developer Notes
 - Generalization design for scaling the dataset pipeline beyond cats-vs-dogs:
   `./code/data_src/dataset_pipeline_generalization_design.md`
+- Mobile deployment (export `.mindir` → convert to `.ms` via converter_lite):
+  `./code/train/docs/deploy.md`
